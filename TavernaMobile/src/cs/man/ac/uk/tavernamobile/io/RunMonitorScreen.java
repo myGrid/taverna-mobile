@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import cs.man.ac.uk.tavernamobile.R;
 import cs.man.ac.uk.tavernamobile.datamodels.WorkflowBE;
 import cs.man.ac.uk.tavernamobile.server.WorkflowRunManager;
@@ -47,8 +48,7 @@ public class RunMonitorScreen extends Activity implements CallbackTask {
 
 	private Activity currentActivity;
 	private HashMap<String, Object> userInputs;
-
-	int notificationId = 0;
+	
 	private NotificationManager mNotificationManager;
 
 	private boolean running = false;
@@ -184,7 +184,7 @@ public class RunMonitorScreen extends Activity implements CallbackTask {
 
 	public Object onTaskComplete(Object... result) {
 		if(result.length > 0 && result[0] instanceof String){
-			MessageHelper.showMessageDialog(currentActivity, null, (String)result[0], null);
+			Toast.makeText(currentActivity, (String)result[0], Toast.LENGTH_SHORT).show();
 			return null;
 		}
 		running = false;
@@ -218,8 +218,7 @@ public class RunMonitorScreen extends Activity implements CallbackTask {
 	}
 
 	private void startNotification(final String wftitle){
-		notificationId++;
-
+		final int notificationId = TavernaAndroid.getNotificationId();
 		// display notification
 		final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(currentActivity)
 		.setSmallIcon(R.drawable.running)
@@ -264,5 +263,9 @@ public class RunMonitorScreen extends Activity implements CallbackTask {
 					}	
 				}
 				).start();
+		
+		// increment notification id
+		int newId = notificationId + 1;
+		TavernaAndroid.setNotificationId(newId);
 	}
 }

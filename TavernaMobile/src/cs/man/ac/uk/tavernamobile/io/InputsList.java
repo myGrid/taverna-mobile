@@ -21,8 +21,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cs.man.ac.uk.tavernamobile.R;
 import cs.man.ac.uk.tavernamobile.datamodels.WorkflowBE;
 import cs.man.ac.uk.tavernamobile.server.WorkflowRunManager;
@@ -177,26 +179,29 @@ public class InputsList extends Activity{
 										// during the starting of workflow run
 										if(result[0] instanceof String){
 											final String message = (String) result[0];
-											
-											MessageHelper.showMessageDialog(
+											Toast.makeText(currentActivity, message, Toast.LENGTH_SHORT).show();
+											/*MessageHelper.showMessageDialog(
 												currentActivity, null, 
-												(String) result[0], new CallbackTask(){
+												(String) result[0], 
+												new CallbackTask(){
 													@Override
 													public Object onTaskInProgress(Object... param) {
 														if(message.equals("The Run has been successfully started.")){
-															currentActivity.finish();
+															
 														}
 														return null;
 													}
 
 													@Override
 													public Object onTaskComplete(Object... result) { return null; }
-												});
+												});*/
 										}
 										return null;
 									}
 								},
 								false);
+							
+							currentActivity.finish();
 							return null;
 						}
 	
@@ -301,7 +306,7 @@ public class InputsList extends Activity{
 				}
 			});
 
-			Button fileSelectButton = (Button) convertView.findViewById(R.id.fileSelectButton);
+			ImageButton fileSelectButton = (ImageButton) convertView.findViewById(R.id.fileSelectButton);
 			fileSelectButton.setOnClickListener(new android.view.View.OnClickListener(){
 
 				public void onClick(View v) {
@@ -309,6 +314,19 @@ public class InputsList extends Activity{
 					inputsListSelectedIndex = selectedInputIndex;
 					Intent intent = new Intent(currentActivity, FilePickerActivity.class);
 					intent.putExtra("inputPortName", currentInputName);
+					startActivityForResult(intent, REQUEST_PICK_FILE);
+				}
+			});
+			
+			ImageButton dropBoxSelectButton = (ImageButton) convertView.findViewById(R.id.dropboxFileSelButton);
+			dropBoxSelectButton.setOnClickListener(new android.view.View.OnClickListener(){
+
+				public void onClick(View v) {
+					currentInputName = inputNames.get(selectedInputIndex);
+					inputsListSelectedIndex = selectedInputIndex;
+					Intent intent = new Intent(currentActivity, FilePickerActivity.class);
+					intent.putExtra("inputPortName", currentInputName);
+					intent.putExtra("fromDropbox", true);
 					startActivityForResult(intent, REQUEST_PICK_FILE);
 				}
 			});
