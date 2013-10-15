@@ -131,10 +131,10 @@ public class RunsFragment extends Fragment {
 		});
 		
 		mainListAdapter = new RunsListAdapter(parentActivity/*, childElements*/);
-		refreshableList.setExpandableAdapter(mainListAdapter);
-		for(int i = 0; i < mainListAdapter.getGroupCount(); i++){
-			refreshableList.expandGroup(i);
-		}
+//		refreshableList.setExpandableAdapter(mainListAdapter);
+//		for(int i = 0; i < mainListAdapter.getGroupCount(); i++){
+//			refreshableList.expandGroup(i);
+//		}
 		/*refreshableList.setDivider(null);
 		refreshableList.setChildDivider(getResources().getDrawable(R.color.transperent));
 		refreshableList.setDividerHeight(10);*/
