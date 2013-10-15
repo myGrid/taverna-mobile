@@ -920,8 +920,9 @@ public class WorkflowRunManager
 				currentPortName = outPort.getName();
 				
 				// prepare output file path
-				outputsSubPath = "/TavernaAndroid/Outputs/" + runStartTime +"/" 
-									+ workflowTitle +"/" + currentPortName + "/";
+				String dateTime = runStartTime.replaceAll(":", "");
+				outputsSubPath = "/TavernaAndroid/Outputs/" + dateTime +"/" 
+									+ workflowTitle +"/" + "/" + currentPortName + "/";
 				locationToStore = getFileSaveLocation(outputsSubPath);
 
 				// undetermined variable
