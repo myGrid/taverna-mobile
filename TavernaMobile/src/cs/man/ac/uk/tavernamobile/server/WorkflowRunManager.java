@@ -628,9 +628,10 @@ public class WorkflowRunManager
 					while(it.hasNext()){
 						FileOutputStream stream = null;
 						try {
-							UUID uuid = UUID.randomUUID();
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss.SSS", Locale.getDefault());
+							String now = dateFormat.format(new Date());
 							// save input by uuid
-							stream = new FileOutputStream(locationToStore+"/"+uuid+".tai");
+							stream = new FileOutputStream(locationToStore+"/"+now+".tai");
 							
 							Map.Entry<String, Object> pair = it.next();
 							Object value = pair.getValue();
@@ -733,7 +734,7 @@ public class WorkflowRunManager
 					mFiles.add(f);
 				}
 			}
-			Collections.sort(mFiles, new FileComparator());
+			Collections.sort(mFiles); //, new FileComparator());
 			// remove the last one i.e. the oldest one
 			if(mFiles.size() > limit){
 				mFiles.get(mFiles.size() - 1).delete();
@@ -742,24 +743,6 @@ public class WorkflowRunManager
 		
 		private class FileComparator implements Comparator<File> {
 			public int compare(File f1, File f2) {
-				String f1time = f1.getName();
-				String f2time = f2.getName();
-				SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
-				Date f1date = null; 
-				Date f2date = null;
-				try {
-					f1date = sdf.parse(f1time);
-					f2date = sdf.parse(f2time);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				if (f1date.before(f2date)) {
-					return 1;
-				}
-				if (f2date.before(f1date)){
-					return -1;
-				}
-				// Sort the directories alphabetically
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			}
 		}
@@ -919,8 +902,9 @@ public class WorkflowRunManager
 				portDepth = outPort.getDepth();
 				currentPortName = outPort.getName();
 				
-				// prepare output file path
+				// prepare output file path. : is not valid on FAT.
 				String dateTime = runStartTime.replaceAll(":", "");
+				// TODO: Include jobID? Not unique for multiple runs!
 				outputsSubPath = "/TavernaAndroid/Outputs/" + dateTime +"/" 
 									+ workflowTitle +"/" + "/" + currentPortName + "/";
 				locationToStore = getFileSaveLocation(outputsSubPath);
