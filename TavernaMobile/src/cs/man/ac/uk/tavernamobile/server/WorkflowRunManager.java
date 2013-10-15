@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -627,11 +628,9 @@ public class WorkflowRunManager
 					while(it.hasNext()){
 						FileOutputStream stream = null;
 						try {
-							// save input by dateTime
-							DateFormat df = DateFormat.getDateTimeInstance();
-							df.setTimeZone(TimeZone.getTimeZone("GMT"));
-							String gmtTime = df.format(new Date());
-							stream = new FileOutputStream(locationToStore+"/"+gmtTime+".tai");
+							UUID uuid = UUID.randomUUID();
+							// save input by uuid
+							stream = new FileOutputStream(locationToStore+"/"+uuid+".tai");
 							
 							Map.Entry<String, Object> pair = it.next();
 							Object value = pair.getValue();
