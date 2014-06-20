@@ -106,9 +106,9 @@ public class SearchResultScreen extends Activity implements CallbackTask {
 		/*resultListAdapter = new SearchResultListAdapter(this, workflowResults);
 		resultList.addFooterView(footerView);
 		resultList.setAdapter(resultListAdapter);*/
-		
+		//TODO callback handler
 		onScrollTaskHandler = 
-				new ListViewOnScrollTaskHandler(resultList, new OnScrollLoadingTask());
+				new ListViewOnScrollTaskHandler(null, resultList, new OnScrollLoadingTask());
 		onScrollTaskHandler.setOnScrollLoading();
 		
 		// setup event reaction -
