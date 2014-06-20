@@ -49,7 +49,7 @@ public class BackgroundTaskHandler {
 			if (taskListener != null) {
 				try{
 					result = taskListener.onTaskInProgress(params);
-				} catch (NetworkConnectionException e){
+				} catch (Exception e){
 					Toast.makeText(currentContext, e.getMessage(), Toast.LENGTH_LONG).show();
 				}
 			}

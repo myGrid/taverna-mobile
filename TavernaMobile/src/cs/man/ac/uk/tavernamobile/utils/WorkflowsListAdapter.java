@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import uk.org.taverna.server.client.NetworkConnectionException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -308,7 +309,13 @@ public class WorkflowsListAdapter extends BaseAdapter {
 				return avatar;
 			}
 			else if(imageHolder instanceof ImageView){
-				Bitmap wfImage = new ImageRetriever().retrieveImage(resourceURI);
+				Bitmap wfImage = null;
+				try {
+					wfImage = new ImageRetriever().retrieveImage(resourceURI);
+				} catch (NetworkConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return wfImage;
 			}
 			

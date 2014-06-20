@@ -1,5 +1,6 @@
 package cs.man.ac.uk.tavernamobile.fragments;
 
+import uk.org.taverna.server.client.NetworkConnectionException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -80,7 +81,13 @@ public class DetailsPreviewFragment extends DetailsFragmentsBase implements Call
 
 	/** network task **/
 	public Object onTaskInProgress(Object... params) {
-		Bitmap imageBitmap = new ImageRetriever().retrieveImage(workflow.getPreview());
+		Bitmap imageBitmap = null;
+		try {
+			imageBitmap = new ImageRetriever().retrieveImage(workflow.getPreview());
+		} catch (NetworkConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// cache image - use image URI as key
 		// String imageCacheKey = workflow.getPreview();//"workflowPreview";
 		// addBitmapToMemoryCache(imageCacheKey, imageBitmap);
